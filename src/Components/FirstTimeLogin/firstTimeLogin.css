@@ -1,0 +1,10 @@
+@media all and (min-width: 480px) {
+  .first-login-page {
+    padding: 60px 0;
+  }
+
+  .first-login-page form {
+    margin: 0 auto;
+    max-width: 320px;
+  }
+}
