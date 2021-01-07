@@ -1,27 +1,18 @@
 import React, { useEffect } from 'react';
+import { Route } from 'react-router-dom';
 import Amplify from 'aws-amplify';
-import FirstTimeLogin from '../FirstTimeLogin/FirstTimeLogin'
-import Login
+import FirstSignIn from '../FirstSignIn/FirstSignIn';
+import SignIn from '../SignIn/SignIn';
+import UserInfo from '../UserInfo/UserInfo';
 
 function App() {
-
-useEffect(() => {
-	Amplify.configure({
-		Auth: {
-			region: process.env.REACT_APP_REGION,
-			userPoolId: process.env.REACT_APP_USER_POOL_ID,
-			userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID,
-		},
-	});
-});
-
-
-  return (
-    <div className="App">
-      <FirstTimeLogin />
-	  
-    </div>
-  );
+	return (
+		<div className='App'>
+			<Route exact path='/firstsignin' render={() => <FirstSignIn />} />
+			<Route exact path='/signin' render={() => <SignIn />} />
+			<Route exact path='/userinfo' render={() => <UserInfo />} />
+		</div>
+	);
 }
 
 export default App;

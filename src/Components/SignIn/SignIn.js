@@ -1,31 +1,23 @@
 import React, { useState } from 'react';
-
 import { Auth } from 'aws-amplify';
-import './LogIn.css';
+import './signIn.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-const Login = () => {
-	
+const SignIn = () => {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const login = (event) => {
+	async function signIn(event) {
 		event.preventDefault();
-		Auth.signIn({
-			username: email,
-			password,
-		})
-			.then((user) => {
-				setEmail('');
-				setPassword('');
-				console.log(user);
-				
-			})
-			.catch((err) => {
-				console.log(err);
-			});
-	};
+
+		try {
+			await Auth.signIn(email, password);
+			alert('Logged in');
+		} catch (e) {
+			console.log(e.message);
+		}
+	}
 
 	return (
 		<div className='login-page'>
@@ -55,7 +47,7 @@ const Login = () => {
 								required
 							/>
 						</Form.Group>
-						<Button type='submit' onClick={login}>
+						<Button type='submit' onClick={signIn}>
 							Login
 						</Button>
 					</Form>
@@ -65,4 +57,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default SignIn;

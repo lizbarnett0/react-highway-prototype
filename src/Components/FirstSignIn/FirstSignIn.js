@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-import './firstTimeLogin.css';
+import './firstSignIn.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
-const FirstTimeLogin = () => {
+const FirstSignIn = () => {
 	const [email, setEmail] = useState('');
 	const [tempPassword, setTempPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
@@ -22,6 +22,7 @@ const FirstTimeLogin = () => {
 						.then((user) => {
 							// at this time the user is logged in if no MFA required
 							console.log(user);
+							
 						})
 						.catch((e) => {
 							console.log(e);
@@ -85,4 +86,4 @@ const FirstTimeLogin = () => {
 	);
 };
 
-export default FirstTimeLogin;
+export default FirstSignIn;
