@@ -3,6 +3,7 @@ import { Auth } from 'aws-amplify';
 import './signIn.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
+import Logo from '../../Images/logo_transparent_background.png'
 
 const SignIn = () => {
 	const [email, setEmail] = useState('');
@@ -22,7 +23,7 @@ const SignIn = () => {
 	return (
 		<div className='login-page'>
 			<div className='login-container'>
-				{/* <img src={Logo} alt='logo' /> */}
+				<img src={Logo} alt='logo' />
 				<div className='form-container'>
 					<Form>
 						<Form.Group size='lg' controlId='email'>
@@ -48,7 +49,7 @@ const SignIn = () => {
 							/>
 						</Form.Group>
 						<Button type='submit' onClick={signIn}>
-							Login
+							Sign In
 						</Button>
 					</Form>
 				</div>

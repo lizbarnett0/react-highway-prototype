@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
-import App from './Components/App/App';
+import App from './App/App'
 import { Amplify } from 'aws-amplify';
 import config from './config';
 
