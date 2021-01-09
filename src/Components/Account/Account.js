@@ -16,7 +16,7 @@ const Account = () => {
 
 	useEffect(() => {
 		getUserInfo();
-	}, []);
+	}, [userInfo]);
 
 	const getUserInfo = async () => {
 		const user = await Auth.currentAuthenticatedUser();
@@ -39,14 +39,6 @@ const Account = () => {
 		<div>
 			<h2> Account Details</h2>
 			<UserInfo userInfo={userInfo} />
-			<Modal
-				show={showPostModal}
-				onHide={handlePostClose}
-				backdrop='static'
-				keyboard={false}
-				className='post-modal-form'>
-				<PostUserInfo handlePostClose={handlePostClose} />
-			</Modal>
 			<Modal
 				show={showUpdateModal}
 				onHide={handleUpdateClose}

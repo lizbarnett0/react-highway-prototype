@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Form, Button, Col } from 'react-bootstrap';
 
-const PostUserInfo = ({ handlePostClose, getUserInfo }) => {
+const PostUserInfo = () => {
 	const [userObject, setUserObject] = useState({
 		fname: '',
 		lname: '',
@@ -23,6 +23,7 @@ const PostUserInfo = ({ handlePostClose, getUserInfo }) => {
 		const token = user.signInUserSession.idToken.jwtToken;
 		const email = user.attributes.email;
 		const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
+		console.log(email, token, user, url)
 
 		const response = await fetch(url, {
 			method: 'POST',
@@ -33,12 +34,11 @@ const PostUserInfo = ({ handlePostClose, getUserInfo }) => {
 		});
 		const data = await response.json();
 		console.log(data);
-	
 	};
 
 	return (
 		<div className='user-post-container'>
-			<Form>
+			<Form onSubmit={postUserInfo}>
 				<Form.Row>
 					<Form.Group as={Col}>
 						<Form.Label>First Name</Form.Label>
@@ -171,11 +171,8 @@ const PostUserInfo = ({ handlePostClose, getUserInfo }) => {
 					</Form.Group>
 				</Form.Row>
 
-				<Button variant='primary' type='submit' onClick={postUserInfo}>
+				<Button variant='primary' type='submit'>
 					Submit
-				</Button>
-				<Button variant='primary' type='submit' onClick={handlePostClose}>
-					Close
 				</Button>
 			</Form>
 		</div>
