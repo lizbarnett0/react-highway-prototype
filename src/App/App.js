@@ -10,8 +10,8 @@ import Home from '../Components/Home/Home';
 function App() {
 	return (
 		<div className='App'>
-			<Navigation />
-			<Route exact path='/firstsignin' render={() => <FirstSignIn />} />
+
+			<Route exact path='/newuser' render={() => <FirstSignIn />} />
 			<Route exact path='/signin' render={() => <SignIn />} />
 			<Route exact path='/account' render={() => <Account />} />
 			<Route exact path='/postuserinfo' render={() => <PostUserInfo />} />

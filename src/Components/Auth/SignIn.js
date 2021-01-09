@@ -33,8 +33,8 @@ const SignIn = () => {
 		return <Redirect to='/home' />;
 	}
 	return (
-		<div className='login-page'>
-			<div className='login-container'>
+		<div className='signin-page'>
+			<div className='signin-container'>
 				<img src={Logo} alt='logo' />
 				<div className='form-container'>
 					<Form>
