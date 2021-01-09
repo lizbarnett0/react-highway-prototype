@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-import './firstSignIn.css';
+import { Redirect, Link } from 'react-router-dom';
+import './auth.css'
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -8,9 +9,10 @@ const FirstSignIn = () => {
 	const [email, setEmail] = useState('');
 	const [tempPassword, setTempPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
-	const [confirmNewPassword, setConfirmNewPassword] = useState('');
+	const [confirmNewPassword, setConfirmNewPassword] = useState('')
+	const [redirect, setRedirect] = useState(false);
 
-	const firstlogIn = (event) => {
+	const firstSignIn = (event) => {
 		event.preventDefault();
 		Auth.signIn(email, tempPassword)
 			.then((user) => {
@@ -19,6 +21,7 @@ const FirstSignIn = () => {
 						user, // the Cognito User Object
 						newPassword // the new password from form
 					)
+					setRedirect(true)
 						.then((user) => {
 							// at this time the user is logged in if no MFA required
 							console.log(user);
@@ -34,8 +37,12 @@ const FirstSignIn = () => {
 			});
 	};
 
+	if (redirect) {
+		return <Redirect to='/account' />;
+	}
+
 	return (
-		<div className='first-login-page'>
+		<div className='first-signin-page'>
 			<Form>
 				<Form.Group size='lg' controlId='email'>
 					<Form.Label>Email</Form.Label>
@@ -78,7 +85,14 @@ const FirstSignIn = () => {
 						required
 					/>
 				</Form.Group>
-				<Button type='submit' onClick={firstlogIn}>
+				<Form.Group>
+					<Form.Check
+						required
+						label='Agree to terms and conditions'
+						feedback='You must agree before submitting.'
+					/>
+				</Form.Group>
+				<Button type='submit' onClick={firstSignIn}>
 					Login
 				</Button>
 			</Form>

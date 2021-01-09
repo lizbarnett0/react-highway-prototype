@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Form, Button, Col } from 'react-bootstrap';
 
-
-const PostUserInfo = () => {
+const PostUserInfo = ({ handlePostClose, getUserInfo }) => {
 	const [userObject, setUserObject] = useState({
 		fname: '',
 		lname: '',
@@ -12,10 +11,6 @@ const PostUserInfo = () => {
 		city: '',
 		state: '',
 		zip: '',
-	});
-
-	useEffect(() => {
-		postUserInfo();
 	});
 
 	const handleChange = (event) => {
@@ -38,13 +33,14 @@ const PostUserInfo = () => {
 		});
 		const data = await response.json();
 		console.log(data);
+	
 	};
 
 	return (
 		<div className='user-post-container'>
 			<Form>
 				<Form.Row>
-					<Form.Group as={Col} controlId='formGridFirstName'>
+					<Form.Group as={Col}>
 						<Form.Label>First Name</Form.Label>
 						<Form.Control
 							type='text'
@@ -56,7 +52,7 @@ const PostUserInfo = () => {
 						/>
 					</Form.Group>
 
-					<Form.Group as={Col} controlId='formGridLastName'>
+					<Form.Group as={Col}>
 						<Form.Label>Last Name</Form.Label>
 						<Form.Control
 							type='text'
@@ -69,7 +65,7 @@ const PostUserInfo = () => {
 					</Form.Group>
 				</Form.Row>
 
-				<Form.Group controlId='formGridAddress1'>
+				<Form.Group>
 					<Form.Label>Address</Form.Label>
 					<Form.Control
 						placeholder='1234 Main St'
@@ -80,7 +76,7 @@ const PostUserInfo = () => {
 					/>
 				</Form.Group>
 
-				<Form.Group controlId='formGridAddress2'>
+				<Form.Group>
 					<Form.Label>Address 2</Form.Label>
 					<Form.Control
 						placeholder='Apartment, studio, or floor'
@@ -91,7 +87,7 @@ const PostUserInfo = () => {
 				</Form.Group>
 
 				<Form.Row>
-					<Form.Group as={Col} controlId='formGridCity'>
+					<Form.Group as={Col}>
 						<Form.Label>City</Form.Label>
 						<Form.Control
 							placeholder='City'
@@ -102,11 +98,10 @@ const PostUserInfo = () => {
 						/>
 					</Form.Group>
 
-					<Form.Group as={Col} controlId='formGridState'>
+					<Form.Group as={Col}>
 						<Form.Label>State</Form.Label>
 						<Form.Control
 							as='select'
-							defaultValue='Choose...'
 							name='state'
 							value={userObject.state}
 							onChange={handleChange}>
@@ -165,7 +160,7 @@ const PostUserInfo = () => {
 						</Form.Control>
 					</Form.Group>
 
-					<Form.Group as={Col} controlId='formGridZip'>
+					<Form.Group as={Col}>
 						<Form.Label>Zip Code</Form.Label>
 						<Form.Control
 							name='zip'
@@ -175,8 +170,12 @@ const PostUserInfo = () => {
 						/>
 					</Form.Group>
 				</Form.Row>
-				<Button variant='primary' type='submit'>
+
+				<Button variant='primary' type='submit' onClick={postUserInfo}>
 					Submit
+				</Button>
+				<Button variant='primary' type='submit' onClick={handlePostClose}>
+					Close
 				</Button>
 			</Form>
 		</div>

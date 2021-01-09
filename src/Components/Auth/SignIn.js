@@ -1,25 +1,37 @@
 import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
-import './signIn.css';
+import './auth.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Logo from '../../Images/logo_transparent_background.png'
+import Logo from '../../Images/logo_transparent_background.png';
 
 const SignIn = () => {
+	const [redirect, setRedirect] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	async function signIn(event) {
+	const signIn = (event) => {
 		event.preventDefault();
+		Auth.signIn(email, password)
+			.then((user) => {
+				if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
+					setRedirect('firstsignin');
+				} else {
+					setRedirect('home');
+				}
+			})
+			.catch((e) => {
+				console.log(e);
+			});
+	};
 
-		try {
-			await Auth.signIn(email, password);
-			alert('Logged in');
-		} catch (e) {
-			console.log(e.message);
-		}
+	if (redirect === 'firstsignin') {
+		return <Redirect to='/firstsignin' />;
 	}
-
+	if (redirect === 'home') {
+		return <Redirect to='/home' />;
+	}
 	return (
 		<div className='login-page'>
 			<div className='login-container'>
