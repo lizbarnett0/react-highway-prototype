@@ -3,11 +3,8 @@ import AccountNav from '../AccountNav';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 
-
 import axios from 'axios';
 import './account.css';
-
-import UserInfo from './UserInfo';
 
 const Account = () => {
 	const [userInfo, setUserInfo] = useState('');
@@ -25,7 +22,7 @@ const Account = () => {
 		event.preventDefault();
 		setUpdatedUserObject({
 			...updatedUserObject,
-			[event.target.name]: event.target.value,
+			[event.target.name]: event.target.innerText,
 		});
 		console.log(updatedUserObject);
 	};
@@ -47,7 +44,6 @@ const Account = () => {
 	};
 
 	const updateUserInfo = async () => {
-		
 		const user = await Auth.currentAuthenticatedUser();
 		const token = user.signInUserSession.idToken.jwtToken;
 		const email = user.attributes.email;
@@ -66,8 +62,25 @@ const Account = () => {
 	return (
 		<div>
 			<AccountNav />
-			<h2> Account Details</h2>
-			<UserInfo userInfo={userInfo} />
+			<div className='account-details-title'> Account Details</div>
+
+			{userInfo ? (
+				<div className='user-info-container'>
+					<p>Username: {userInfo.id}</p>
+					<p>
+						Name: {userInfo.firstName} {userInfo.lastName}
+					</p>
+					<p>
+						Address: {userInfo.addressOne}, {userInfo.addressTwo}
+					</p>
+					<p>
+						{userInfo.city}, {userInfo.state} {userInfo.zip}
+					</p>
+					<p>Company: {userInfo.company}</p>
+				</div>
+			) : (
+				<p>hi</p>
+			)}
 
 			<Modal show={show} onHide={handleClose}>
 				<Modal.Header closeButton>
@@ -80,9 +93,9 @@ const Account = () => {
 								<Form.Label>First Name</Form.Label>
 								<Form.Control
 									type='text'
-									placeholder={userInfo.firstName}
+									// placeholder={userInfo.firstName}
 									name='fname'
-									// value={userInfo.firstName}
+									value={userInfo.firstName}
 									onChange={handleChange}
 									required
 								/>

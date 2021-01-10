@@ -9,15 +9,19 @@
 	height: 100vh;
 }
 
+.new-user-container {
+	
+}
+
 .signin-container {
 	/* margin: 0 auto; */
-	max-width: 500px;
+	max-width: 1200px;
 	background-color: white;
 	padding: 30px;
 	border: 2px solid black;
 	border-radius: 15px;
 	position: fixed;
-	top: 50%;
+	top: 35%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }

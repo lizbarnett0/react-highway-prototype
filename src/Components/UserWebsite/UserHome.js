@@ -1,5 +1,5 @@
 import React from 'react';
-import AccountNav from '../AccountNav'
+import AccountNav from './AccountNav'
 
 const UserHome = () => {
     return (
