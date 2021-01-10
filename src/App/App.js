@@ -4,7 +4,7 @@ import FirstSignIn from '../Components/Auth/FirstSignIn';
 import SignIn from '../Components/Auth/SignIn';
 import Account from '../Components/Account/Account';
 import PostUserInfo from '../Components/Account/PostUserInfo';
-import UpdateUserInfo from '../Components/Account/UpdateUserInfo'
+
 
 function App() {
 	return (
