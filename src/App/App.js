@@ -13,7 +13,7 @@ function App() {
 			<Route exact path='/signin' render={() => <SignIn />} />
 			<Route exact path='/account' render={() => <Account />} />
 			<Route exact path='/postuserinfo' render={() => <PostUserInfo />} />
-			<Route exact path='/updateuserinfo' render={() => <UpdateUserInfo />} />
+			{/* <Route exact path='/updateuserinfo' render={() => <UpdateUserInfo />} /> */}
 		</div>
 	);
 }
