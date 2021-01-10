@@ -6,3 +6,8 @@
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
+
+.error-message {
+	color: red;
+	margin: 5px;
+}

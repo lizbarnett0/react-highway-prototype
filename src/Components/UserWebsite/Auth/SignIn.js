@@ -4,17 +4,19 @@ import { Auth } from 'aws-amplify';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Logo from '../../Images/logo_transparent_background.png';
+import Logo from '../../../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {
 	const [redirect, setRedirect] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [error, setError]=useState('')
 
 	const signIn = (event) => {
 		event.preventDefault();
 		Auth.signIn(email, password)
 			.then((user) => {
+				setError('')
 				if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
 					setRedirect('firstsignin');
 				} else {
@@ -22,7 +24,7 @@ const SignIn = () => {
 				}
 			})
 			.catch((e) => {
-				console.log(e);
+				setError(e.message)
 			});
 	};
 
@@ -39,7 +41,7 @@ const SignIn = () => {
 				<div className='form-container'>
 					<Form>
 						<Form.Group size='lg' controlId='email'>
-							<Form.Label>Email</Form.Label>
+							<Form.Label>Username</Form.Label>
 							<Form.Control
 								type='email'
 								name='email'
@@ -60,6 +62,7 @@ const SignIn = () => {
 								required
 							/>
 						</Form.Group>
+						<div className='error-message'>{error}</div>
 						<Button type='submit' onClick={signIn}>
 							Sign In
 						</Button>

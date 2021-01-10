@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Redirect} from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Logo from '../../Images/logo_transparent_background.png';
+import Logo from '../../../Images/dark_logo_transparent_background.png';
 
 const FirstSignIn = () => {
 	const [email, setEmail] = useState('');
 	const [tempPassword, setTempPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmNewPassword, setConfirmNewPassword] = useState('');
+	const [error, setError] = useState('');
 	const [redirect, setRedirect] = useState(false);
 
 	const firstSignIn = (event) => {
@@ -28,12 +29,12 @@ const FirstSignIn = () => {
 							console.log(user);
 						})
 						.catch((e) => {
-							console.log(e);
+							setError(e.message);
 						});
 				}
 			})
 			.catch((e) => {
-				console.log(e);
+				setError(e.message);
 			});
 	};
 
@@ -94,6 +95,7 @@ const FirstSignIn = () => {
 							feedback='You must agree before submitting.'
 						/>
 					</Form.Group>
+					<div className='error-message'>{error}</div>
 					<Button type='submit' onClick={firstSignIn}>
 						Login
 					</Button>

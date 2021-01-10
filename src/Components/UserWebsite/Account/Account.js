@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import AccountNav from '../AccountNav';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
+
+
 import axios from 'axios';
 import './account.css';
 
@@ -63,6 +65,7 @@ const Account = () => {
 
 	return (
 		<div>
+			<AccountNav />
 			<h2> Account Details</h2>
 			<UserInfo userInfo={userInfo} />
 

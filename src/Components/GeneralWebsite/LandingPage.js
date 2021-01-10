@@ -1,7 +1,7 @@
 import React from 'react';
-import GeneralNav from '../Navigation/GeneralNav'
+import GeneralNav from './GeneralNav'
 
-const Home = () => {
+const LandingPage = () => {
     return (
         <div>
             <GeneralNav />
@@ -9,4 +9,4 @@ const Home = () => {
     );
 };
 
-export default Home;
+export default LandingPage;
