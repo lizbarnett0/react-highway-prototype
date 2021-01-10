@@ -1,14 +1,17 @@
 import React, {useState} from 'react';
 import { Auth } from 'aws-amplify';
 import { Form, Button, Col } from 'react-bootstrap';
+import axios from 'axios';
+import './account.css';
 
-const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
-    const [updatedUserInfo, setUpdatedUserInfo] = useState(userInfo)
+const UpdateUserInfo = ({  userInfo }) => {
+    const [updatedUserObject, setUpdatedUserInfo] = useState(userInfo)
     
     
     const handleChange = (event) => {
 			event.preventDefault();
-			setUpdatedUserInfo({ ...updatedUserInfo, [event.target.name]: event.target.value });
+			setUpdatedUserInfo({ ...updatedUserObject, [event.target.name]: event.target.value });
+			console.log(updatedUserObject)
 		};
 
 	const updateUserInfo = async () => {
@@ -17,20 +20,18 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 		const email = user.attributes.email;
 		const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
 
-		const response = await fetch(url, {
-			method: 'PATCH',
-			headers: {
-				'Cog-Token': token,
-			},
-			updatedUserInfo,
-		});
-		const data = await response.json();
-		console.log(data);
-		handleUpdateClose();
+		const response = await axios
+			.post(url, updatedUserObject, { headers: { 'Cog-Token': token } })
+			.then((response) => {
+				console.log(response);
+			})
+			.catch(console.error);
+
+		console.log(response);
 	};
 	return (
-		<div className='user-post-container'>
-			<Form>
+		<div className='user-update-container'>
+			<Form onSubmit={updateUserInfo}>
 				<Form.Row>
 					<Form.Group as={Col}>
 						<Form.Label>First Name</Form.Label>
@@ -38,7 +39,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 							type='text'
 							placeholder='Enter First Name'
 							name='fname'
-							value={updatedUserInfo.firstName}
+							value={updatedUserObject.firstName}
 							onChange={handleChange}
 							required
 						/>
@@ -50,7 +51,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 							type='text'
 							placeholder='Last Name'
 							name='lname'
-							value={updatedUserInfo.lastName}
+							value={updatedUserObject.lastName}
 							onChange={handleChange}
 							required
 						/>
@@ -62,7 +63,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 					<Form.Control
 						placeholder='1234 Main St'
 						name='add1'
-						value={updatedUserInfo.addressOne}
+						value={updatedUserObject.addressOne}
 						onChange={handleChange}
 						required
 					/>
@@ -73,7 +74,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 					<Form.Control
 						placeholder='Apartment, studio, or floor'
 						name='add2'
-						value={updatedUserInfo.addressTwo}
+						value={updatedUserObject.addressTwo}
 						onChange={handleChange}
 					/>
 				</Form.Group>
@@ -84,7 +85,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 						<Form.Control
 							placeholder='City'
 							name='city'
-							value={updatedUserInfo.city}
+							value={updatedUserObject.city}
 							onChange={handleChange}
 							required
 						/>
@@ -95,7 +96,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 						<Form.Control
 							as='select'
 							name='state'
-							value={updatedUserInfo.state}
+							value={updatedUserObject.state}
 							onChange={handleChange}>
 							<option>Choose...</option>
 							<option value='AL'>AL</option>
@@ -156,7 +157,7 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 						<Form.Label>Zip Code</Form.Label>
 						<Form.Control
 							name='zip'
-							value={updatedUserInfo.zip}
+							value={updatedUserObject.zip}
 							onChange={handleChange}
 							required
 						/>
@@ -165,9 +166,6 @@ const UpdateUserInfo = ({ handleUpdateClose, userInfo }) => {
 
 				<Button variant='primary' type='submit' onClick={updateUserInfo}>
 					Submit
-				</Button>
-				<Button variant='primary' type='submit' onClick={handleUpdateClose}>
-					Close
 				</Button>
 			</Form>
 		</div>

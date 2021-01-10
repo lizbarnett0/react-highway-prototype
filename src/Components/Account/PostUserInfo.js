@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { Form, Button, Col } from 'react-bootstrap';
+import axios from 'axios';
+import './account.css';
 
 const PostUserInfo = () => {
 	const [userObject, setUserObject] = useState({
@@ -23,17 +25,16 @@ const PostUserInfo = () => {
 		const token = user.signInUserSession.idToken.jwtToken;
 		const email = user.attributes.email;
 		const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
-		console.log(email, token, user, url)
+		
 
-		const response = await fetch(url, {
-			method: 'POST',
-			headers: {
-				'Cog-Token': token,
-			},
-			userObject,
-		});
-		const data = await response.json();
-		console.log(data);
+		const response = await axios
+			.post(url, userObject, { headers: { 'Cog-Token': token } })
+			.then((response) => {
+				console.log(response);
+			})
+			.catch(console.error);
+		
+			console.log(response)
 	};
 
 	return (
@@ -44,7 +45,7 @@ const PostUserInfo = () => {
 						<Form.Label>First Name</Form.Label>
 						<Form.Control
 							type='text'
-							placeholder='Enter First Name'
+							placeholder='First Name'
 							name='fname'
 							value={userObject.fname}
 							onChange={handleChange}
@@ -164,6 +165,7 @@ const PostUserInfo = () => {
 						<Form.Label>Zip Code</Form.Label>
 						<Form.Control
 							name='zip'
+							placeholder='00000'
 							value={userObject.zip}
 							onChange={handleChange}
 							required
@@ -171,7 +173,7 @@ const PostUserInfo = () => {
 					</Form.Group>
 				</Form.Row>
 
-				<Button variant='primary' type='submit'>
+				<Button variant='primary' type='submit' onClick={postUserInfo}>
 					Submit
 				</Button>
 			</Form>
