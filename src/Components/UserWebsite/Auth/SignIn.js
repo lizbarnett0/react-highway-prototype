@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Redirect } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
+import { useAppContext } from '../../../libs/contextLib'
 import './auth.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Logo from '../../../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {
+	const { setIsAuthenticated } = useAppContext();
 	const [redirect, setRedirect] = useState('');
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
@@ -21,6 +23,7 @@ const SignIn = () => {
 					setRedirect('firstsignin');
 				} else {
 					setRedirect('home');
+					setIsAuthenticated(true)
 				}
 			})
 			.catch((e) => {

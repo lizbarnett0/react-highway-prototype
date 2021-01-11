@@ -10,6 +10,7 @@ const Account = () => {
 	const [userInfo, setUserInfo] = useState('');
 	const [show, setShow] = useState(false);
 	const [updatedUserObject, setUpdatedUserObject] = useState('');
+	
 
 	const handleClose = () => setShow(false);
 	const handleShow = () => setShow(true);

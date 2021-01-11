@@ -1,23 +1,25 @@
-import React, {useState} from 'react';
-import { Redirect} from 'react-router-dom';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
+import { useAppContext } from '../../libs/contextLib';
 import Logo from '../../Images/dark_logo_transparent_background.png';
 
 const AccountNav = () => {
-	const [redirect, setRedirect] = useState(false)
-
+	const [redirect, setRedirect] = useState(false);
+	const { isaAuthenticated, setIsAuthenticated } = useAppContext();
 
 	const signOut = async () => {
 		try {
 			await Auth.signOut();
-			setRedirect(true)
+			setIsAuthenticated(false)
+			setRedirect(true);
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
-	if (redirect){
+	if (redirect) {
 		return <Redirect to='/' />;
 	}
 	return (
