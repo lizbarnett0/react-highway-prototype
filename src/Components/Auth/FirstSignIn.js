@@ -4,7 +4,7 @@ import { Redirect } from 'react-router-dom';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
-import Logo from '../../../Images/dark_logo_transparent_background.png';
+import Logo from '../../Images/dark_logo_transparent_background.png'
 
 const FirstSignIn = () => {
 	const [email, setEmail] = useState('');
@@ -12,7 +12,7 @@ const FirstSignIn = () => {
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmNewPassword, setConfirmNewPassword] = useState('');
 	const [error, setError] = useState('');
-	const [redirect, setRedirect] = useState(false);
+	// const [redirect, setRedirect] = useState(false);
 
 	const firstSignIn = (event) => {
 		event.preventDefault();
@@ -22,15 +22,9 @@ const FirstSignIn = () => {
 					Auth.completeNewPassword(
 						user, // the Cognito User Object
 						newPassword // the new password from form
-					);
-					setRedirect(true)
-						.then((user) => {
-							// at this time the user is logged in if no MFA required
-							console.log(user);
-						})
-						.catch((e) => {
-							setError(e.message);
-						});
+					).catch((e) => {
+						setError(e.message);
+					});
 				}
 			})
 			.catch((e) => {
@@ -38,9 +32,9 @@ const FirstSignIn = () => {
 			});
 	};
 
-	if (redirect) {
-		return <Redirect to='/account' />;
-	}
+	// if (redirect) {
+	// 	return <Redirect to='/account' />;
+	// }
 
 	return (
 		<div className='first-signin-page'>

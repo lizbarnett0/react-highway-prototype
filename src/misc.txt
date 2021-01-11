@@ -1,6 +1,0 @@
-// try {
-		// 	await Auth.signIn(email, password);
-		// 	setRedirect(true)
-		// } catch (e) {
-		// 	console.log(e.message);
-		// }

@@ -1,10 +1,10 @@
 import React from 'react';
-import AccountNav from './AccountNav'
+
 
 const UserHome = () => {
     return (
         <div>
-            <AccountNav />
+            USER HOME PAGE
         </div>
     );
 };

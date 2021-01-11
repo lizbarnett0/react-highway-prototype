@@ -2,12 +2,11 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
-import App from './App/App'
+import App from './App';
 import { Amplify } from 'aws-amplify';
 import config from './config';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 
 Amplify.configure({
 	Auth: {

@@ -1,10 +1,10 @@
 import React from 'react';
-import GeneralNav from './GeneralNav'
+
 
 const LandingPage = () => {
     return (
         <div>
-            <GeneralNav />
+            HOME CONTENT
         </div>
     );
 };
