@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
-import { Redirect } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
-import Logo from '../../Images/dark_logo_transparent_background.png'
+import LoaderButton from '../LoaderButton';
+import Logo from '../../Images/dark_logo_transparent_background.png';
 
 const FirstSignIn = () => {
 	const [email, setEmail] = useState('');
 	const [tempPassword, setTempPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
 	const [confirmNewPassword, setConfirmNewPassword] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState('');
-	// const [redirect, setRedirect] = useState(false);
+	const history = useHistory();
 
 	const firstSignIn = (event) => {
 		event.preventDefault();
-		Auth.signIn(email, tempPassword)
+		setIsLoading(true);
+		Auth.signIn(email, tempPassword);
+		history
+			.push('/home')
 			.then((user) => {
 				if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
 					Auth.completeNewPassword(
@@ -29,12 +33,9 @@ const FirstSignIn = () => {
 			})
 			.catch((e) => {
 				setError(e.message);
+				setIsLoading(false);
 			});
 	};
-
-	// if (redirect) {
-	// 	return <Redirect to='/account' />;
-	// }
 
 	return (
 		<div className='first-signin-page'>
@@ -90,9 +91,15 @@ const FirstSignIn = () => {
 						/>
 					</Form.Group>
 					<div className='error-message'>{error}</div>
-					<Button type='submit' onClick={firstSignIn}>
-						Login
-					</Button>
+					<LoaderButton
+						block
+						size='lg'
+						type='submit'
+						isLoading={isLoading}
+						onClick={firstSignIn}>
+						Sign In
+					</LoaderButton>
+			
 				</Form>
 			</div>
 		</div>

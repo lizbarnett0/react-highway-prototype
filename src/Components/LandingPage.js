@@ -4,7 +4,7 @@ import React from 'react';
 const LandingPage = () => {
     return (
         <div>
-            HOME CONTENT
+            HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
         </div>
     );
 };

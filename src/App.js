@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { AppContext } from './libs/contextLib';
 import { Auth } from 'aws-amplify';
@@ -8,6 +9,7 @@ import Logo from './Images/dark_logo_transparent_background.png';
 function App() {
 	const [isAuthenticating, setIsAuthenticating] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const history = useHistory();
 
 	useEffect(() => {
 		onLoad();
@@ -29,6 +31,7 @@ function App() {
 	const signOut = async () => {
 		await Auth.signOut();
 		setIsAuthenticated(false);
+		history.push('/login');
 	};
 
 	return (

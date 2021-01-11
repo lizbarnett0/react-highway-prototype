@@ -1,42 +1,40 @@
 import React, { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { useAppContext } from '../../libs/contextLib';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/Button';
+import LoaderButton from '../LoaderButton'
 import Logo from '../../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {
 	const { setIsAuthenticated } = useAppContext();
-	const [redirect, setRedirect] = useState('');
+	const history = useHistory();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
 
 	const signIn = (event) => {
 		event.preventDefault();
+		setIsLoading(true);
 		Auth.signIn(email, password)
 			.then((user) => {
 				setError('');
 				if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
-					setRedirect('firstsignin');
+					history.push('/newuser');
 				} else {
-					setRedirect('home');
 					setIsAuthenticated(true);
+					history.push('/home');
 				}
 			})
 			.catch((e) => {
 				setError(e.message);
+				setIsLoading(false);
 			});
 	};
 
-	if (redirect === 'firstsignin') {
-		return <Redirect to='/firstsignin' />;
-	}
-	if (redirect === 'home') {
-		return <Redirect to='/home' />;
-	}
+	
 	return (
 		<div className='signin-page'>
 			<div className='signin-container'>
@@ -66,9 +64,15 @@ const SignIn = () => {
 							/>
 						</Form.Group>
 						<div className='error-message'>{error}</div>
-						<Button type='submit' onClick={signIn}>
+						<LoaderButton
+							block
+							size='lg'
+							type='submit'
+							isLoading={isLoading}
+							onClick={signIn}>
 							Sign In
-						</Button>
+						</LoaderButton>
+						
 					</Form>
 				</div>
 			</div>
