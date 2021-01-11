@@ -31,7 +31,7 @@ function App() {
 	const signOut = async () => {
 		await Auth.signOut();
 		setIsAuthenticated(false);
-		history.push('/login');
+		history.push('/signin');
 	};
 
 	return (
