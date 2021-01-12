@@ -1,12 +1,11 @@
 .user-post-container {
-    max-width: 600px;
-    margin: auto;
+	max-width: 600px;
+	margin: auto;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
 }
-
 
 .error-message {
 	color: red;
@@ -15,10 +14,55 @@
 
 /* User Info Section */
 .user-info-container {
-max-width: 600px;
-margin: auto;
+	border: black solid 2px;
+	width: 500px;
+	/* height: 350px; */
+	margin: 15px auto;
+	text-align: center;
 }
 
 button {
 	text-align: center;
+}
+
+.account-details-title {
+	padding-top:  5%;
+	font-size: 40px;
+	text-align: center;
+}
+
+.linked-accounts-container {
+	border: black solid 2px;
+	width: 500px;
+	/* height: 350px; */
+	margin: 15px auto;
+	text-align: center;
+}
+
+.account-message {
+	font-size: 25px;
+	text-align: center;
+	margin: 20px auto;
+}
+
+.info-title {
+	font-size: 15px;
+	text-align: left;
+	margin: 10px 20px 2px;
+	font-weight: 800;
+
+}
+
+.user-info {
+	font-size: 15px;
+	text-align: left;
+	margin: 5px 20px;
+}
+
+.button-div {
+	margin: 20px auto;
+}
+
+.account-section-title {
+	font-weight: 800;
 }

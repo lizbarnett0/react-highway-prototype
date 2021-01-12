@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { AppContext } from './libs/contextLib';
 import { Auth } from 'aws-amplify';
+import './app.scss'
 import Routes from './Routes';
 import Logo from './Images/dark_logo_transparent_background.png';
 
@@ -37,7 +38,13 @@ function App() {
 	return (
 		!isAuthenticating && (
 			<div className='App'>
-				<Navbar collapseOnSelect expand='lg' bg='light' variant='light'>
+				<Navbar
+					fixed='top'
+					collapseOnSelect
+					expand='lg'
+					bg='light'
+					variant='light'
+					className='nav-bar'>
 					<Navbar.Brand href='/'>
 						<img
 							src={Logo}

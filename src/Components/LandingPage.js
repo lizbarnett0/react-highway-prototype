@@ -3,9 +3,17 @@ import React from 'react';
 
 const LandingPage = () => {
     return (
-        <div>
+        <>
+        <div className='landing-page'>
             HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
         </div>
+        <div >
+            HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
+        </div>
+         <div >
+            HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
+        </div>
+        </>
     );
 };
 

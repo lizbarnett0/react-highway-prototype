@@ -1,15 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
-
+import LoaderButton from '../LoaderButton';
 import axios from 'axios';
 import './account.css';
 
 const Account = () => {
+	const [error, setError] = useState('');
+	const [isLoading, setIsLoading] = useState(false);
+	const [currentPassword, setCurrentPassword] = useState('');
+	const [newPassword, setNewPassword] = useState('');
 	const [userInfo, setUserInfo] = useState('');
 	const [updateShow, setUpdateShow] = useState(false);
 	const [postShow, setPostShow] = useState(false);
-	const [updatedUserObject, setUpdatedUserObject] = useState('');
+	const [passwordShow, setPasswordShow] = useState(false);
+	const [updatedUserObject, setUpdatedUserObject] = useState({
+		fname: userInfo.firstName,
+		lname: userInfo.lastName,
+		add1: userInfo.addressOne,
+		add2: userInfo.addressTwo,
+		city: userInfo.city,
+		state: userInfo.state,
+		zip: userInfo.zip,
+		ph: userInfo.phone,
+	});
+
 	const [postUserObject, setPostUserObject] = useState({
 		fname: '',
 		lname: '',
@@ -18,9 +33,8 @@ const Account = () => {
 		city: '',
 		state: '',
 		zip: '',
-		ph: ''
+		ph: '',
 	});
-	
 
 	const handlePostClose = () => setPostShow(false);
 	const handlePostShow = () => setPostShow(true);
@@ -28,18 +42,12 @@ const Account = () => {
 	const handleUpdateClose = () => setUpdateShow(false);
 	const handleUpdateShow = () => setUpdateShow(true);
 
+	const handlePasswordClose = () => setPasswordShow(false);
+	const handlePasswordShow = () => setPasswordShow(true);
+
 	useEffect(() => {
 		getUserInfo();
 	}, []);
-
-	const handleChange = (event) => {
-		event.preventDefault();
-		setUpdatedUserObject({
-			...updatedUserObject,
-			[event.target.name]: event.target.innerText,
-		});
-		console.log(updatedUserObject);
-	};
 
 	const getUserInfo = async () => {
 		const user = await Auth.currentAuthenticatedUser();
@@ -52,36 +60,46 @@ const Account = () => {
 				'Cog-Token': token,
 			},
 		});
+		console.log(token);
 		const data = await response.data[0];
 		setUserInfo(data);
-		console.log(userInfo);
 	};
 
+	// Post User Information Functions
 
+	const handlePostChange = (event) => {
+		event.preventDefault();
+		setPostUserObject({
+			...postUserObject,
+			[event.target.name]: event.target.value,
+		});
+	};
 
-const handlePostChange = (event) => {
-	event.preventDefault();
-	setPostUserObject({ ...postUserObject, [event.target.name]: event.target.value });
-};
+	const postUserInfo = async () => {
+		const user = await Auth.currentAuthenticatedUser();
+		const token = user.signInUserSession.idToken.jwtToken;
+		const email = user.attributes.email;
+		const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
 
-const postUserInfo = async () => {
-	const user = await Auth.currentAuthenticatedUser();
-	const token = user.signInUserSession.idToken.jwtToken;
-	const email = user.attributes.email;
-	const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
+		const response = await axios
+			.post(url, postUserObject, { headers: { 'Cog-Token': token } })
+			.then((response) => {
+				console.log(response);
+			})
+			.catch(console.error);
 
-	const response = await axios
-		.post(url, postUserObject, { headers: { 'Cog-Token': token } })
-		.then((response) => {
-			console.log(response);
-		})
-		.catch(console.error);
+		console.log(response);
+	};
 
-	console.log(response);
-};
-
-
-
+	// Update User Information Functions
+	const handleUpdateChange = (event) => {
+		event.preventDefault();
+		setUpdatedUserObject({
+			...updatedUserObject,
+			[event.target.name]: event.target.value,
+		});
+		console.log(updatedUserObject);
+	};
 
 	const updateUserInfo = async () => {
 		const user = await Auth.currentAuthenticatedUser();
@@ -99,29 +117,76 @@ const postUserInfo = async () => {
 		console.log(response);
 	};
 
+	const changePassword = async () => {
+		setIsLoading(true);
+		Auth.currentAuthenticatedUser()
+			.then((user) => {
+				return Auth.changePassword(user, currentPassword, newPassword);
+			})
+			.then((data) => {
+				console.log(data)
+				handlePasswordClose()
+			})
+			.catch((e) => {
+				setError(e.message);
+				setIsLoading(false);
+			});
+	};
+
 	return (
 		<div>
 			<div className='account-details-title'> Account Details</div>
-
+			<div className='account-message'>
+				Your are logged in as {userInfo.id}.
+			</div>
 			{userInfo ? (
 				<div className='user-info-container'>
-					<p>Welcome {userInfo.id}!</p>
-					<div className='account-details-title'> Account Details</div>
-					<p>
-						Name: {userInfo.firstName} {userInfo.lastName}
-					</p>
-					<p>Address:</p>
-					<p>
-						{userInfo.addressOne}, {userInfo.addressTwo}
-					</p>
-					<p>
+					<div className='account-section-title'> User Information</div>
+					<div className='info-title'> Name</div>
+					<div className='user-info'>
+						{userInfo.firstName} {userInfo.lastName}
+					</div>
+					<div className='info-title'> Address</div>
+					<div className='user-info'>
+						{userInfo.addressOne}, {userInfo.addressTwo} <br />
 						{userInfo.city}, {userInfo.state} {userInfo.zip}
-					</p>
-					<p>Phone Number: {userInfo.phone}</p>
+					</div>
+					<div className='info-title'> Phone</div>
+					<div className='user-info'>{userInfo.phone}</div>
+
+					{!userInfo ? (
+						<div className='button-div'>
+							<Button variant='primary' onClick={handlePostShow}>
+								Add Account Details
+							</Button>
+						</div>
+					) : (
+						<div className='button-div'>
+							<Button variant='primary' onClick={handleUpdateShow}>
+								Update Information
+							</Button>
+						</div>
+					)}
 				</div>
 			) : (
 				<p>Please Update Your Account Details</p>
 			)}
+			<div className='linked-accounts-container'>
+				<div className='account-section-title'> Plaid Accounts</div>
+
+				<div className='button-div'>
+					<Button variant='primary'>Link Plaid Account</Button>
+				</div>
+			</div>
+			<div className='linked-accounts-container'>
+				<div className='account-section-title'> Credentials</div>
+
+				<div className='button-div'>
+					<Button variant='primary' onClick={handlePasswordShow}>
+						Change Password
+					</Button>
+				</div>
+			</div>
 			<Modal show={postShow} onHide={handlePostClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Account Details</Modal.Title>
@@ -192,7 +257,7 @@ const postUserInfo = async () => {
 								<Form.Control
 									as='select'
 									name='state'
-									value={postUserObject.state}
+									//value={postUserObject.state}
 									onChange={handlePostChange}>
 									<option>Choose...</option>
 									<option value='AL'>AL</option>
@@ -265,18 +330,8 @@ const postUserInfo = async () => {
 							<Form.Label>Phone</Form.Label>
 							<Form.Control
 								placeholder='(555) 555-555'
-								name='add1'
+								name='ph'
 								value={postUserObject.ph}
-								onChange={handlePostChange}
-								required
-							/>
-						</Form.Group>
-						<Form.Group>
-							<Form.Label>Company</Form.Label>
-							<Form.Control
-								placeholder='(555) 555-555'
-								name='add1'
-								value={postUserObject.add1}
 								onChange={handlePostChange}
 								required
 							/>
@@ -292,7 +347,7 @@ const postUserInfo = async () => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
-
+			{/* Update Information Modal */}
 			<Modal show={updateShow} onHide={handleUpdateClose}>
 				<Modal.Header closeButton>
 					<Modal.Title>Update Information</Modal.Title>
@@ -304,10 +359,9 @@ const postUserInfo = async () => {
 								<Form.Label>First Name</Form.Label>
 								<Form.Control
 									type='text'
-									// placeholder={userInfo.firstName}
 									name='fname'
-									value={userInfo.firstName}
-									onChange={handleChange}
+									value={updatedUserObject.firstName}
+									onChange={handleUpdateChange}
 									required
 								/>
 							</Form.Group>
@@ -316,10 +370,9 @@ const postUserInfo = async () => {
 								<Form.Label>Last Name</Form.Label>
 								<Form.Control
 									type='text'
-									placeholder={userInfo.lastName}
 									name='lname'
-									// value={userInfo.lastName}
-									onChange={handleChange}
+									value={updatedUserObject.lname}
+									onChange={handleUpdateChange}
 									required
 								/>
 							</Form.Group>
@@ -327,10 +380,9 @@ const postUserInfo = async () => {
 						<Form.Group>
 							<Form.Label>Address</Form.Label>
 							<Form.Control
-								placeholder={userInfo.addressOne}
 								name='add1'
-								// value={userInfo.addressOne}
-								onChange={handleChange}
+								value={updatedUserObject.add1}
+								onChange={handleUpdateChange}
 								required
 							/>
 						</Form.Group>
@@ -338,10 +390,9 @@ const postUserInfo = async () => {
 						<Form.Group>
 							<Form.Label>Address 2</Form.Label>
 							<Form.Control
-								placeholder={userInfo.addressTwo}
 								name='add2'
-								// value={userInfo.addressOne}
-								onChange={handleChange}
+								value={updatedUserObject.add2}
+								onChange={handleUpdateChange}
 							/>
 						</Form.Group>
 
@@ -349,10 +400,9 @@ const postUserInfo = async () => {
 							<Form.Group as={Col}>
 								<Form.Label>City</Form.Label>
 								<Form.Control
-									placeholder={userInfo.city}
 									name='city'
-									// value={userInfo.city}
-									onChange={handleChange}
+									value={updatedUserObject.city}
+									onChange={handleUpdateChange}
 									required
 								/>
 							</Form.Group>
@@ -362,8 +412,8 @@ const postUserInfo = async () => {
 								<Form.Control
 									as='select'
 									name='state'
-									value={userInfo.state}
-									onChange={handleChange}>
+									value={updatedUserObject.state}
+									onChange={handleUpdateChange}>
 									<option>Choose...</option>
 									<option value='AL'>AL</option>
 									<option value='AK'>AK</option>
@@ -422,13 +472,22 @@ const postUserInfo = async () => {
 								<Form.Label>Zip Code</Form.Label>
 								<Form.Control
 									name='zip'
-									placeholder={userInfo.zip}
-									// value={userInfo.zip}
-									onChange={handleChange}
+									value={updatedUserObject.zip}
+									onChange={handleUpdateChange}
 									required
 								/>
 							</Form.Group>
 						</Form.Row>
+
+						<Form.Group>
+							<Form.Label>Phone Number</Form.Label>
+							<Form.Control
+								name='ph'
+								value={updatedUserObject.ph}
+								onChange={handleUpdateChange}
+								required
+							/>
+						</Form.Group>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
@@ -440,16 +499,47 @@ const postUserInfo = async () => {
 					</Button>
 				</Modal.Footer>
 			</Modal>
+			<Modal show={passwordShow} onHide={handlePasswordClose}>
+				<Modal.Header closeButton>
+					<Modal.Title>Change Password</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<Form>
+						<Form.Group size='lg' controlId='old-password'>
+							<Form.Label>Current Password</Form.Label>
+							<Form.Control
+								type='password'
+								placeholder='Current Password'
+								value={currentPassword}
+								onChange={(e) => setCurrentPassword(e.target.value)}
+								required
+							/>
+						</Form.Group>
+						<Form.Group size='lg' controlId='new-password'>
+							<Form.Label>New Password</Form.Label>
+							<Form.Control
+								type='password'
+								name='new-password'
+								placeholder='New Password'
+								value={newPassword}
+								onChange={(e) => setNewPassword(e.target.value)}
+								required
+							/>
+						</Form.Group>
 
-			{!userInfo ? (
-				<Button variant='primary' onClick={handlePostShow}>
-					Add Account Details
-				</Button>
-			) : (
-				<Button variant='primary' onClick={handleUpdateShow}>
-					Update Information
-				</Button>
-			)}
+						<div className='error-message'>{error}</div>
+				
+					</Form>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant='secondary' onClick={handlePasswordClose}>
+						Close
+					</Button>
+					<LoaderButton variant='primary' onClick={changePassword}>
+						Save Changes
+					</LoaderButton>
+				</Modal.Footer>
+			</Modal>
 		</div>
 	);
 };
