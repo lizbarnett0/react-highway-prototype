@@ -7,12 +7,7 @@ const LandingPage = () => {
         <div className='landing-page'>
             HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
         </div>
-        <div >
-            HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
-        </div>
-         <div >
-            HOME CONTENT / GENERAL WEBSITE MATERIALS GO HERE
-        </div>
+    
         </>
     );
 };

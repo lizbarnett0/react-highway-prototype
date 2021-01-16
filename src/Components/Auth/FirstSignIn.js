@@ -3,7 +3,7 @@ import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
-import LoaderButton from '../LoaderButton';
+import LoaderButton from '../../OtherItems/LoaderButton';
 import Logo from '../../Images/dark_logo_transparent_background.png';
 
 const FirstSignIn = () => {
@@ -18,15 +18,15 @@ const FirstSignIn = () => {
 	const firstSignIn = (event) => {
 		event.preventDefault();
 		setIsLoading(true);
-		Auth.signIn(email, tempPassword);
-		history
-			.push('/home')
+		Auth.signIn(email, tempPassword)
 			.then((user) => {
 				if (user.challengeName === 'NEW_PASSWORD_REQUIRED') {
 					Auth.completeNewPassword(
 						user, // the Cognito User Object
 						newPassword // the new password from form
-					).catch((e) => {
+					)
+					history.push('/home')
+					.catch((e) => {
 						setError(e.message);
 					});
 				}

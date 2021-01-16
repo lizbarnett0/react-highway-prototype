@@ -1,13 +1,13 @@
 import React from 'react';
-import { Switch } from 'react-router-dom';
-import UnauthenticatedRoute from './Components/UnauthenticatedRoute';
-import AuthenticatedRoute from './Components/AuthenticatedRoute';
+import { Switch, Route } from 'react-router-dom';
+import UnauthenticatedRoute from './OtherItems/UnauthenticatedRoute';
+import AuthenticatedRoute from './OtherItems/AuthenticatedRoute';
 import LandingPage from './Components/LandingPage';
 import UserHome from './Components/UserHome';
-import SignIn from './Components/Auth/SignIn'
+import SignIn from './Components/Auth/SignIn';
 import FirstSignIn from './Components/Auth/FirstSignIn';
 import Account from './Components/AccountDetails/Account';
-import NotFound from './Components/NotFound'
+import NotFound from './Components/NotFound';
 
 const Routes = () => {
 	return (

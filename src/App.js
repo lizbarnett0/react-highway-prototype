@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
 import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { AppContext } from './libs/contextLib';
-import { Auth } from 'aws-amplify';
-import './app.scss'
 import Routes from './Routes';
 import Logo from './Images/dark_logo_transparent_background.png';
 
 function App() {
+	const history = useHistory();
 	const [isAuthenticating, setIsAuthenticating] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
-	const history = useHistory();
 
 	useEffect(() => {
 		onLoad();
@@ -58,7 +57,7 @@ function App() {
 					<Navbar.Collapse id='responsive-navbar-nav'>
 						<Nav className='mr-auto'>
 							<Nav.Link href='/howitworks'>How It Works</Nav.Link>
-							<Nav.Link to='/demo'>Request A Demo</Nav.Link>
+							<Nav.Link href='/demo'>Request A Demo</Nav.Link>
 							<NavDropdown title='Our Company' id='collasible-nav-dropdown'>
 								<NavDropdown.Item href='/about'>About Us</NavDropdown.Item>
 								<NavDropdown.Item href='/press'>Press</NavDropdown.Item>
@@ -74,10 +73,10 @@ function App() {
 										<NavDropdown.Item href='/account'>
 											Account Details
 										</NavDropdown.Item>
-										<NavDropdown.Item href='/press'>
+										<NavDropdown.Item href='/loansummary'>
 											Loan Summary
 										</NavDropdown.Item>
-										<NavDropdown.Item href='/careers'>
+										<NavDropdown.Item href='/transactions'>
 											Transactions
 										</NavDropdown.Item>
 									</NavDropdown>

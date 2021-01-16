@@ -4,7 +4,7 @@ import { Auth } from 'aws-amplify';
 import { useAppContext } from '../../libs/contextLib';
 import './auth.css';
 import Form from 'react-bootstrap/Form';
-import LoaderButton from '../LoaderButton'
+import LoaderButton from '../../OtherItems/LoaderButton'
 import Logo from '../../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {

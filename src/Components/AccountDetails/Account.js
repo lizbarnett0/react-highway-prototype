@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
-import LoaderButton from '../LoaderButton';
+import { usePlaidLink } from 'react-plaid-link';
+import LoaderButton from '../../OtherItems/LoaderButton';
 import axios from 'axios';
 import './account.css';
 
 const Account = () => {
-	const [error, setError] = useState('');
+	const [err, setErr] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentPassword, setCurrentPassword] = useState('');
 	const [newPassword, setNewPassword] = useState('');
@@ -86,7 +87,7 @@ const Account = () => {
 			.then((response) => {
 				console.log(response);
 			})
-			.catch(console.error);
+			.catch(console.err);
 
 		console.log(response);
 	};
@@ -112,11 +113,67 @@ const Account = () => {
 			.then((response) => {
 				console.log(response);
 			})
-			.catch(console.error);
+			.catch(console.err);
 
 		console.log(response);
 	};
 
+	//Plaid Account Functions
+	let linkToken = '';
+	let publicToken = '';
+
+	const getLinkToken = async () => {
+		const user = await Auth.currentAuthenticatedUser();
+		const token = user.signInUserSession.idToken.jwtToken;
+
+		const response = await axios.get(
+			'https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/link-token/',
+			{
+				headers: {
+					'Cog-Token': token,
+				},
+			}
+		);
+		linkToken = response.results.link_token;
+	};
+
+	const onSuccess = useCallback((publicToken, metadata) => {
+		const user = Auth.currentAuthenticatedUser();
+		const token = user.signInUserSession.idToken.jwtToken;
+		axios({
+			method: 'post',
+			url: 'https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/link-token',
+			data: {
+				public_token: publicToken, 
+				metadata: metadata
+			},
+			headers: {
+				'Cog-Token': token
+			}
+		});
+		
+	}, []);
+
+	const onEvent = useCallback(
+		(eventName, metadata) => console.log('onEvent', eventName, metadata),
+		[]
+	);
+
+	const onExit = useCallback(
+		(err, metadata) => console.log('onExit', err, metadata),
+		[]
+	);
+
+	const config = {
+		token: linkToken,
+		onSuccess,
+		onEvent,
+		onExit,
+	};
+
+	const { open, ready, error } = usePlaidLink(config);
+
+	//Edit Credentials Functions
 	const changePassword = async () => {
 		setIsLoading(true);
 		Auth.currentAuthenticatedUser()
@@ -124,14 +181,18 @@ const Account = () => {
 				return Auth.changePassword(user, currentPassword, newPassword);
 			})
 			.then((data) => {
-				console.log(data)
-				handlePasswordClose()
+				console.log(data);
+				handlePasswordClose();
 			})
 			.catch((e) => {
-				setError(e.message);
+				setErr(e.message);
 				setIsLoading(false);
 			});
 	};
+
+	if (!userInfo) {
+		return <div>Loading...</div>;
+	}
 
 	return (
 		<div>
@@ -175,7 +236,9 @@ const Account = () => {
 				<div className='account-section-title'> Plaid Accounts</div>
 
 				<div className='button-div'>
-					<Button variant='primary'>Link Plaid Account</Button>
+					<Button onClick={() => open()} disabled={!ready || error}>
+						Connect a bank account
+					</Button>
 				</div>
 			</div>
 			<div className='linked-accounts-container'>
@@ -527,15 +590,19 @@ const Account = () => {
 							/>
 						</Form.Group>
 
-						<div className='error-message'>{error}</div>
-				
+						<div className='error-message'>{err}</div>
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
 					<Button variant='secondary' onClick={handlePasswordClose}>
 						Close
 					</Button>
-					<LoaderButton variant='primary' onClick={changePassword}>
+					<LoaderButton
+						block
+						size='lg'
+						type='submit'
+						isLoading={isLoading}
+						onClick={changePassword}>
 						Save Changes
 					</LoaderButton>
 				</Modal.Footer>

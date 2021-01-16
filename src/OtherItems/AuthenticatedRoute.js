@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Redirect, useLocation } from 'react-router-dom';
 import { useAppContext } from '../libs/contextLib';
 
-const AuthenticatedRoute = ({ children, ...rest }) => {
+export default function AuthenticatedRoute({ children, ...rest }) {
 	const { pathname, search } = useLocation();
 	const { isAuthenticated } = useAppContext();
 	return (
@@ -14,6 +14,4 @@ const AuthenticatedRoute = ({ children, ...rest }) => {
 			)}
 		</Route>
 	);
-};
-
-export default AuthenticatedRoute;
+}
