@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Auth } from 'aws-amplify';
 import { useHistory } from 'react-router-dom';
-import './auth.css';
+import './firstSignIn.css';
 import Form from 'react-bootstrap/Form';
-import LoaderButton from '../../OtherItems/LoaderButton';
-import Logo from '../../Images/dark_logo_transparent_background.png';
+import LoaderButton from '../OtherItems/LoaderButton';
+import Logo from '../Images/dark_logo_transparent_background.png';
 
 const FirstSignIn = () => {
 	const [email, setEmail] = useState('');

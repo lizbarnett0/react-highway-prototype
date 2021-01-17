@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { useHistory} from 'react-router-dom';
 import { Auth } from 'aws-amplify';
-import { useAppContext } from '../../libs/contextLib';
-import './auth.css';
+import { useAppContext } from '../libs/contextLib';
+import './signIn.css';
 import Form from 'react-bootstrap/Form';
-import LoaderButton from '../../OtherItems/LoaderButton'
-import Logo from '../../Images/dark_logo_transparent_background.png';
+import LoaderButton from '../OtherItems/LoaderButton'
+import Logo from '../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {
 	const { setIsAuthenticated } = useAppContext();

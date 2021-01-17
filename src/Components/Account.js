@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import { usePlaidLink } from 'react-plaid-link';
-import LoaderButton from '../../OtherItems/LoaderButton';
+import LoaderButton from '../OtherItems/LoaderButton';
 import axios from 'axios';
 import './account.css';
 
@@ -598,8 +598,6 @@ const Account = () => {
 						Close
 					</Button>
 					<LoaderButton
-						block
-						size='lg'
 						type='submit'
 						isLoading={isLoading}
 						onClick={changePassword}>

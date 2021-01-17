@@ -4,17 +4,17 @@ import UnauthenticatedRoute from './OtherItems/UnauthenticatedRoute';
 import AuthenticatedRoute from './OtherItems/AuthenticatedRoute';
 import LandingPage from './Components/LandingPage';
 import UserHome from './Components/UserHome';
-import SignIn from './Components/Auth/SignIn';
-import FirstSignIn from './Components/Auth/FirstSignIn';
-import Account from './Components/AccountDetails/Account';
+import SignIn from './Components/SignIn';
+import FirstSignIn from './Components/FirstSignIn';
+import Account from './Components/Account';
 import NotFound from './Components/NotFound';
 
 const Routes = () => {
 	return (
 		<Switch>
-			<UnauthenticatedRoute exact path='/'>
+			<Route exact path='/'>
 				<LandingPage />
-			</UnauthenticatedRoute>
+			</Route>
 			<UnauthenticatedRoute exact path='/newuser'>
 				<FirstSignIn />
 			</UnauthenticatedRoute>
@@ -27,9 +27,10 @@ const Routes = () => {
 			<AuthenticatedRoute exact path='/account'>
 				<Account />
 			</AuthenticatedRoute>
-			<UnauthenticatedRoute>
+
+			<Route>
 				<NotFound />
-			</UnauthenticatedRoute>
+			</Route>
 		</Switch>
 	);
 };

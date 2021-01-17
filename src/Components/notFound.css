@@ -1,8 +1,30 @@
 .not-found-page {
-    max-width: 600px;
-	margin: auto;
+	margin-top: 80px;
+	text-align: center;
+	max-width: 600px;
 	position: fixed;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+}
+
+.not-found-404 {
+	top: 20%;
+	margin: 50px auto;
+	display: block;
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+	transform: rotate(45deg);
+	position: relative;
+	background: #ffa200;
+	border: 5px dashed #000;
+	border-radius: 5px;
+}
+
+.not-found-404 h1 {
+	position: absolute;
+	top: 42%;
+	left: 32%;
+	transform: rotate(-45deg);
 }

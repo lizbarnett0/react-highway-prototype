@@ -1,5 +1,7 @@
-.landing-page{
-    padding-top: 20%;
-    margin: 50px;
-    color:black
+.landing-page {
+	text-align: center;
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 }
