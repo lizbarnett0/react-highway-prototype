@@ -27,7 +27,6 @@ const Routes = () => {
 			<AuthenticatedRoute exact path='/account'>
 				<Account />
 			</AuthenticatedRoute>
-
 			<Route>
 				<NotFound />
 			</Route>

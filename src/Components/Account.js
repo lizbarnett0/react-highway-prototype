@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useAppContext } from '../libs/contextLib';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
 import { usePlaidLink } from 'react-plaid-link';
@@ -7,6 +8,7 @@ import axios from 'axios';
 import './account.css';
 
 const Account = () => {
+	const { setNavbarStyle, setNavbarVariant } = useAppContext();
 	const [err, setErr] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
 	const [currentPassword, setCurrentPassword] = useState('');
@@ -37,6 +39,9 @@ const Account = () => {
 		ph: '',
 	});
 
+	setNavbarStyle('#004225');
+	setNavbarVariant('dark')
+	
 	const handlePostClose = () => setPostShow(false);
 	const handlePostShow = () => setPostShow(true);
 
@@ -217,13 +222,19 @@ const Account = () => {
 
 					{!userInfo ? (
 						<div className='button-div'>
-							<Button variant='primary' onClick={handlePostShow}>
+							<Button
+								variant='primary'
+								onClick={handlePostShow}
+								style={{ backgroundColor: '#004225' }}>
 								Add Account Details
 							</Button>
 						</div>
 					) : (
 						<div className='button-div'>
-							<Button variant='primary' onClick={handleUpdateShow}>
+							<Button
+								variant='primary'
+								onClick={handleUpdateShow}
+								style={{ backgroundColor: '#004225' }}>
 								Update Information
 							</Button>
 						</div>
@@ -236,7 +247,10 @@ const Account = () => {
 				<div className='account-section-title'> Plaid Accounts</div>
 
 				<div className='button-div'>
-					<Button onClick={() => open()} disabled={!ready || error}>
+					<Button
+						onClick={() => open()}
+						disabled={!ready || error}
+						style={{ backgroundColor: '#004225' }}>
 						Connect a bank account
 					</Button>
 				</div>
@@ -245,7 +259,10 @@ const Account = () => {
 				<div className='account-section-title'> Credentials</div>
 
 				<div className='button-div'>
-					<Button variant='primary' onClick={handlePasswordShow}>
+					<Button
+						variant='primary'
+						onClick={handlePasswordShow}
+						style={{ backgroundColor: '#004225' }}>
 						Change Password
 					</Button>
 				</div>
@@ -402,10 +419,16 @@ const Account = () => {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant='secondary' onClick={handlePostClose}>
+					<Button
+						variant='secondary'
+						onClick={handlePostClose}
+						style={{ backgroundColor: '#004225' }}>
 						Close
 					</Button>
-					<Button variant='primary' onClick={postUserInfo}>
+					<Button
+						variant='primary'
+						onClick={postUserInfo}
+						style={{ backgroundColor: '#004225' }}>
 						Save Changes
 					</Button>
 				</Modal.Footer>
@@ -554,10 +577,16 @@ const Account = () => {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant='secondary' onClick={handleUpdateClose}>
+					<Button
+						variant='secondary'
+						onClick={handleUpdateClose}
+						style={{ backgroundColor: '#004225' }}>
 						Close
 					</Button>
-					<Button variant='primary' onClick={updateUserInfo}>
+					<Button
+						variant='primary'
+						onClick={updateUserInfo}
+						style={{ backgroundColor: '#004225' }}>
 						Save Changes
 					</Button>
 				</Modal.Footer>
@@ -594,7 +623,10 @@ const Account = () => {
 					</Form>
 				</Modal.Body>
 				<Modal.Footer>
-					<Button variant='secondary' onClick={handlePasswordClose}>
+					<Button
+						variant='secondary'
+						onClick={handlePasswordClose}
+						style={{ backgroundColor: '#004225' }}>
 						Close
 					</Button>
 					<LoaderButton

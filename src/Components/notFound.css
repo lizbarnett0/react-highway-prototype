@@ -1,5 +1,4 @@
 .not-found-page {
-	margin-top: 80px;
 	text-align: center;
 	max-width: 600px;
 	position: fixed;
@@ -17,14 +16,15 @@
 	overflow: hidden;
 	transform: rotate(45deg);
 	position: relative;
-	background: #ffa200;
-	border: 5px dashed #000;
+	background: #F6D172;
+	border: 5px solid #000;
 	border-radius: 5px;
 }
 
 .not-found-404 h1 {
 	position: absolute;
-	top: 42%;
-	left: 32%;
+	top: 32%;
+	left: 20%;
 	transform: rotate(-45deg);
+	font-size: 60px;
 }

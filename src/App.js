@@ -5,11 +5,17 @@ import { Navbar, Nav, NavDropdown } from 'react-bootstrap';
 import { AppContext } from './libs/contextLib';
 import Routes from './Routes';
 import Logo from './Images/dark_logo_transparent_background.png';
+import './app.css';
 
 function App() {
 	const history = useHistory();
 	const [isAuthenticating, setIsAuthenticating] = useState(true);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
+	const [navbarStyle, setNavbarStyle] = useState('#004225');
+	const [navbarVariant, setNavbarVariant] = useState('dark');
+	// const [navLogo, setNavLogo] = useState(
+	// 	'./Images/white_logo_transparent_background.png'
+	// );
 
 	useEffect(() => {
 		onLoad();
@@ -37,58 +43,68 @@ function App() {
 	return (
 		!isAuthenticating && (
 			<div className='App'>
-				<Navbar
-					fixed='top'
-					collapseOnSelect
-					expand='lg'
-					bg='light'
-					variant='light'
-					className='nav-bar'>
-					<Navbar.Brand href='/'>
-						<img
-							src={Logo}
-							width='150'
-							height='50'
-							className='d-inline-block align-top'
-							alt='Highway Benefits logo'
-						/>
-					</Navbar.Brand>
-					<Navbar.Toggle aria-controls='responsive-navbar-nav' />
-					<Navbar.Collapse id='responsive-navbar-nav'>
-						<Nav className='mr-auto'>
-							<Nav.Link href='/howitworks'>How It Works</Nav.Link>
-							<Nav.Link href='/demo'>Request A Demo</Nav.Link>
-							<NavDropdown title='Our Company' id='collasible-nav-dropdown'>
-								<NavDropdown.Item href='/about'>About Us</NavDropdown.Item>
-								<NavDropdown.Item href='/press'>Press</NavDropdown.Item>
-								<NavDropdown.Item href='/careers'>Careers</NavDropdown.Item>
-							</NavDropdown>
-						</Nav>
-						<Nav>
-							{isAuthenticated ? (
-								<Nav className='ml-auto'>
-									<NavDropdown
-										title='My Dashboard'
-										id='collasible-nav-dropdown'>
-										<NavDropdown.Item href='/account'>
-											Account Details
-										</NavDropdown.Item>
-										<NavDropdown.Item href='/loansummary'>
-											Loan Summary
-										</NavDropdown.Item>
-										<NavDropdown.Item href='/transactions'>
-											Transactions
-										</NavDropdown.Item>
-									</NavDropdown>
-									<Nav.Link onClick={signOut}>Sign Out</Nav.Link>
-								</Nav>
-							) : (
-								<Nav.Link href='/signin'>Sign In</Nav.Link>
-							)}
-						</Nav>
-					</Navbar.Collapse>
-				</Navbar>
-				<AppContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+				<AppContext.Provider
+					value={{
+						isAuthenticated,
+						setIsAuthenticated,
+						setNavbarStyle,
+						setNavbarVariant,
+					}}>
+					<Navbar
+						fixed='top'
+						collapseOnSelect
+						expand='lg'
+						variant={navbarVariant}
+						style={{ backgroundColor: navbarStyle }}
+						className='nav-bar'>
+						<Navbar.Brand href='/'>
+							<img
+								src={Logo}
+								width='150'
+								height='50'
+								className='d-inline-block align-top'
+								alt='Highway Benefits logo'
+							/>
+						</Navbar.Brand>
+						<Navbar.Toggle aria-controls='responsive-navbar-nav' />
+						<Navbar.Collapse id='responsive-navbar-nav'>
+							<Nav className='mr-auto'>
+								<Nav.Link href='/howitworks'>How It Works</Nav.Link>
+								<Nav.Link href='/demo'>Request A Demo</Nav.Link>
+								<NavDropdown title='Our Company' id='collasible-nav-dropdown'>
+									<NavDropdown.Item href='/about'>About Us</NavDropdown.Item>
+									<NavDropdown.Item href='/press'>Press</NavDropdown.Item>
+									<NavDropdown.Item href='/careers'>Careers</NavDropdown.Item>
+								</NavDropdown>
+							</Nav>
+							<Nav>
+								{isAuthenticated ? (
+									<Nav className='ml-auto'>
+										<NavDropdown
+											title='My Dashboard'
+											id='collasible-nav-dropdown'>
+											<NavDropdown.Item href='/home'>
+												User Home
+											</NavDropdown.Item>
+											<NavDropdown.Item href='/account'>
+												Account Details
+											</NavDropdown.Item>
+											<NavDropdown.Item href='/loansummary'>
+												Loan Summary
+											</NavDropdown.Item>
+											<NavDropdown.Item href='/transactions'>
+												Transactions
+											</NavDropdown.Item>
+										</NavDropdown>
+										<Nav.Link onClick={signOut}>Sign Out</Nav.Link>
+									</Nav>
+								) : (
+									<Nav.Link href='/signin'>Sign In</Nav.Link>
+								)}
+							</Nav>
+						</Navbar.Collapse>
+					</Navbar>
+
 					<Routes />
 				</AppContext.Provider>
 			</div>

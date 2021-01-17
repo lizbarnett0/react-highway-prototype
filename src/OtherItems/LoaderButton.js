@@ -12,6 +12,7 @@ export default function LoaderButton({
 	return (
 		<Button
 			disabled={disabled || isLoading}
+			style={{ backgroundColor: '#004225' }}
 			className={`LoaderButton ${className}`}
 			{...props}>
 			{isLoading && <BsArrowRepeat className='spinning' />}

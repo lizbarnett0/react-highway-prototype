@@ -1,7 +1,11 @@
 import React from 'react';
 import './notFound.css';
+import { useAppContext } from '../libs/contextLib';
 
 const NotFound = () => {
+		const { setNavbarStyle, setNavbarVariant } = useAppContext();
+		setNavbarStyle('#004225')
+		setNavbarVariant('dark');
 	return (
 		<div className='not-found-page'>
 			<div className='not-found-404'>

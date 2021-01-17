@@ -1,19 +1,22 @@
 import React, { useState } from 'react';
-import { useHistory} from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { Auth } from 'aws-amplify';
 import { useAppContext } from '../libs/contextLib';
 import './signIn.css';
 import Form from 'react-bootstrap/Form';
-import LoaderButton from '../OtherItems/LoaderButton'
+import LoaderButton from '../OtherItems/LoaderButton';
 import Logo from '../Images/dark_logo_transparent_background.png';
 
 const SignIn = () => {
-	const { setIsAuthenticated } = useAppContext();
+	const { setIsAuthenticated, setNavbarStyle,setNavbarVariant } = useAppContext();
 	const history = useHistory();
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 	const [isLoading, setIsLoading] = useState(false);
+
+	setNavbarStyle('white')
+	setNavbarVariant('light')
 
 	const signIn = (event) => {
 		event.preventDefault();
@@ -34,7 +37,6 @@ const SignIn = () => {
 			});
 	};
 
-	
 	return (
 		<div className='signin-page'>
 			<div className='signin-container'>
@@ -63,16 +65,17 @@ const SignIn = () => {
 								required
 							/>
 						</Form.Group>
-						<div className='error-message'>{error}</div>
+						<div className='error-message'> {error}</div>
+						<div className='first-time'>First time visiting Highway? Click <a href='/newuser'> here</a>.</div>
 						<LoaderButton
 							block
 							size='lg'
 							type='submit'
+							style={{ backgroundColor: '#004225' }}
 							isLoading={isLoading}
 							onClick={signIn}>
 							Sign In
 						</LoaderButton>
-						
 					</Form>
 				</div>
 			</div>
