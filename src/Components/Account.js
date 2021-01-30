@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect} from 'react';
 import { useAppContext } from '../libs/contextLib';
 import { Button, Form, Modal, Col } from 'react-bootstrap';
 import { Auth } from 'aws-amplify';
-// import { usePlaidLink } from 'react-plaid-link';
 import LoaderButton from '../OtherItems/LoaderButton';
 import axios from 'axios';
 import './account.css';
@@ -102,7 +101,7 @@ const Account = () => {
 	// Update User Information Functions
 	const handleUpdateChange = (event) => {
 		event.preventDefault();
-		setUpdatedUserObject({
+		setUpdatedUserObject({...updatedUserObject,
 			[event.target.name]: event.target.value,
 		});
 		console.log(updatedUserObject);
@@ -115,7 +114,7 @@ const Account = () => {
 		const url = `https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/users/${email}`;
 
 		const response = await axios
-			.patch(url, updatedUserObject, { headers: { 'Cog-Token': token } })
+			.post(url, updatedUserObject, { headers: { 'Cog-Token': token } })
 			.then((response) => {
 				console.log(response);
 			})
@@ -123,59 +122,6 @@ const Account = () => {
 	};
 
 	//Plaid Account Functions
-	// let linkToken = '';
-	// let publicToken = '';
-
-	// const getLinkToken = async () => {
-	// 	const user = await Auth.currentAuthenticatedUser();
-	// 	const token = user.signInUserSession.idToken.jwtToken;
-
-	// 	const response = await axios.get(
-	// 		'https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/link-token/',
-	// 		{
-	// 			headers: {
-	// 				'Cog-Token': token,
-	// 			},
-	// 		}
-	// 	);
-	// 	linkToken = response.results.link_token;
-	// };
-
-	// const onSuccess = useCallback((publicToken, metadata) => {
-	// 	const user = Auth.currentAuthenticatedUser();
-	// 	const token = user.signInUserSession.idToken.jwtToken;
-	// 	axios({
-	// 		method: 'post',
-	// 		url: 'https://o2rnmbhkc7.execute-api.us-east-2.amazonaws.com/dev/link-token',
-	// 		data: {
-	// 			public_token: publicToken,
-	// 			metadata: metadata
-	// 		},
-	// 		headers: {
-	// 			'Cog-Token': token
-	// 		}
-	// 	});
-
-	// }, []);
-
-	// const onEvent = useCallback(
-	// 	(eventName, metadata) => console.log('onEvent', eventName, metadata),
-	// 	[]
-	// );
-
-	// const onExit = useCallback(
-	// 	(err, metadata) => console.log('onExit', err, metadata),
-	// 	[]
-	// );
-
-	// const config = {
-	// 	token: linkToken,
-	// 	onSuccess,
-	// 	onEvent,
-	// 	onExit,
-	// };
-
-	// const { open, ready, error } = usePlaidLink(config);
 
 	function linkAccount() {
 		let link_token = '';
@@ -222,9 +168,6 @@ const Account = () => {
 		function exhangePublicToken() {
 			let requestBody = {};
 			requestBody['public_token'] = pub_token;
-			// requestBody['bank_name'] = document.getElementById(
-			// 	'linked-account-name'
-			// ).value;
 			let bodyJson = JSON.stringify(requestBody);
 			let xhr = new XMLHttpRequest();
 			xhr.open(
@@ -311,7 +254,7 @@ const Account = () => {
 					)}
 				</div>
 			) : (
-				<div>
+				<div className='please-update'>
 					<p>Please Update Your Account Details</p>
 					<Button
 						variant='primary'

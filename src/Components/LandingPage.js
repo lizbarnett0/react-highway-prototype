@@ -8,8 +8,19 @@ const LandingPage = () => {
 	setNavbarVariant('dark');
 	return (
 		<div className='landing-page'>
-			<h2>LANDING PAGE</h2>
-			<p>Add general Highway Benefits content here</p>
+			<div className='tagline'>
+				Changing the relationship between employers and their employees through
+				new and improved benefits.
+			</div>
+			<div className='description'>
+				Highway's first product, a student loan matching platform, allows
+				employers to design a custom plan which helps to contribute to their
+				employees' student loans, in turn helping employees pay off their loans
+				faster, saving money and reducing stress.
+			</div>
+			<div className='contact'>
+				Interested in learning more?  <a href='mailto:cory@highwaybenefits.com'>Contact us!</a>
+			</div>
 		</div>
 	);
 };

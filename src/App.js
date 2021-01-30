@@ -13,9 +13,7 @@ function App() {
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [navbarStyle, setNavbarStyle] = useState('#004225');
 	const [navbarVariant, setNavbarVariant] = useState('dark');
-	// const [navLogo, setNavLogo] = useState(
-	// 	'./Images/white_logo_transparent_background.png'
-	// );
+
 
 	useEffect(() => {
 		onLoad();

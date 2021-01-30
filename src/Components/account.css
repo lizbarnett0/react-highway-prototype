@@ -14,6 +14,13 @@
 }
 
 /* User Info Section */
+
+.please-update {
+	border: black solid 2px;
+	width: 500px;
+	margin: 15px auto;
+	text-align: center;
+}
 .user-info-container {
 	border: black solid 2px;
 	width: 500px;
